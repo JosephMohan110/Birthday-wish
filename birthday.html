@@ -1,0 +1,1355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Birthday Surprise for Greeshma</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;400;600;700&family=Great+Vibes&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #ff4d8d;
+            --secondary: #9c27b0;
+            --accent: #ffeb3b;
+            --dark: #2d1b69;
+            --light: #f8bbd9;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+            color: white;
+            perspective: 1000px;
+        }
+
+        /* Audio Permission Overlay */
+        .audio-permission-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            text-align: center;
+            padding: 20px;
+            transition: opacity 0.5s ease, visibility 0.5s ease; /* Ensure smooth hiding */
+        }
+
+        .audio-permission-overlay.hidden {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        .permission-icon {
+            font-size: 5rem;
+            color: var(--accent);
+            margin-bottom: 20px;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .permission-title {
+            font-size: 2.5rem;
+            color: var(--accent);
+            margin-bottom: 20px;
+            font-family: 'Dancing Script', cursive;
+        }
+
+        .permission-text {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            max-width: 600px;
+            line-height: 1.6;
+        }
+
+        .permission-button {
+            padding: 15px 40px;
+            font-size: 1.5rem;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        .permission-button:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+        }
+
+        /* Countdown Overlay Styles */
+        .countdown-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            transition: opacity 0.5s ease, visibility 0.5s ease;
+        }
+
+        .countdown-overlay.hidden {
+            opacity: 0;
+            visibility: hidden; /* Fix: Added visibility to truly hide it */
+            pointer-events: none;
+        }
+
+        .countdown-number {
+            font-size: 15rem;
+            font-weight: 700;
+            color: var(--accent);
+            text-shadow: 0 0 30px rgba(255, 235, 59, 0.8);
+            animation: pulse 1s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        .countdown-message {
+            font-size: 3rem;
+            margin-top: 20px;
+            text-align: center;
+            color: var(--light);
+            font-family: 'Dancing Script', cursive;
+        }
+
+        /* Gift Acceptance Overlay */
+        .gift-acceptance-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            transition: opacity 0.5s ease;
+        }
+
+        .gift-acceptance-overlay.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .gift-question {
+            font-size: 4rem;
+            color: var(--accent);
+            margin-bottom: 50px;
+            text-align: center;
+            font-family: 'Dancing Script', cursive;
+            text-shadow: 0 0 20px rgba(255, 235, 59, 0.5);
+        }
+
+        .gift-buttons {
+            display: flex;
+            gap: 40px;
+        }
+
+        .gift-btn {
+            padding: 20px 50px;
+            font-size: 2rem;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 700;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        .gift-yes {
+            background: linear-gradient(to right, #4CAF50, #8BC34A);
+            color: white;
+        }
+
+        .gift-no {
+            background: linear-gradient(to right, #F44336, #E91E63);
+            color: white;
+            position: relative;
+        }
+
+        .gift-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+        }
+
+        /* Main Content */
+        .main-content {
+            display: none;
+            opacity: 0;
+            transition: opacity 1s ease;
+        }
+
+        .main-content.active {
+            display: block;
+            opacity: 1;
+        }
+
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        .star {
+            position: absolute;
+            background-color: white;
+            border-radius: 50%;
+            animation: twinkle 5s infinite;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.2; }
+            50% { opacity: 1; }
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .header {
+            text-align: center;
+            margin: 30px 0;
+            width: 100%;
+        }
+
+        h1 {
+            font-family: 'Dancing Script', cursive;
+            font-size: 5rem;
+            background: linear-gradient(to right, var(--primary), var(--accent), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 10px;
+            text-shadow: 0 0 20px rgba(255, 77, 141, 0.5);
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            from { text-shadow: 0 0 10px rgba(255, 77, 141, 0.5); }
+            to { text-shadow: 0 0 30px rgba(255, 77, 141, 0.8), 0 0 40px rgba(255, 77, 141, 0.6); }
+        }
+
+        .birthday-date {
+            font-size: 1.8rem;
+            color: var(--light);
+            margin-bottom: 10px;
+            font-weight: 300;
+        }
+
+        .birthday-name {
+            font-family: 'Great Vibes', cursive;
+            font-size: 3.5rem;
+            color: var(--accent);
+            text-shadow: 0 0 15px rgba(255, 235, 59, 0.7);
+            margin-bottom: 20px;
+            letter-spacing: 2px;
+            animation: nameGlow 3s ease-in-out infinite alternate;
+        }
+
+        @keyframes nameGlow {
+            0% { 
+                text-shadow: 0 0 10px rgba(255, 235, 59, 0.5);
+                transform: scale(1);
+            }
+            100% { 
+                text-shadow: 0 0 25px rgba(255, 235, 59, 0.9), 0 0 35px rgba(255, 235, 59, 0.7);
+                transform: scale(1.05);
+            }
+        }
+
+        .gift-cards-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 30px;
+            margin: 40px 0;
+            width: 100%;
+        }
+
+        .gift-card {
+            width: 280px;
+            height: 350px;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            cursor: pointer;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+        }
+
+        .gift-card:hover {
+            transform: rotateY(10deg) rotateX(5deg) translateY(-10px);
+        }
+
+        .gift-card.flipped {
+            transform: rotateY(180deg);
+        }
+
+        .card-front, .card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            overflow: hidden;
+        }
+
+        .card-front {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            transform-style: preserve-3d;
+        }
+
+        .card-front::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 70%);
+            transform: rotate(30deg);
+        }
+
+        .card-back {
+            background: linear-gradient(135deg, var(--dark), #4a1c6b);
+            color: white;
+            transform: rotateY(180deg);
+            text-align: center;
+        }
+
+        .card-icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            color: var(--accent);
+            text-shadow: 0 0 10px rgba(255, 235, 59, 0.5);
+        }
+
+        .card-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+        }
+
+        .card-message {
+            font-size: 1.1rem;
+            line-height: 1.5;
+            font-weight: 300;
+        }
+
+        .card-button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background: var(--accent);
+            color: var(--dark);
+            border: none;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .card-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+        }
+
+        /* Video Section */
+        .video-container {
+            width: 100%;
+            max-width: 800px;
+            margin: 50px auto;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            position: relative;
+        }
+
+        .video-container video {
+            width: 100%;
+            display: block;
+        }
+
+        .video-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 1;
+            transition: opacity 0.5s ease;
+        }
+
+        .video-overlay.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .play-button {
+            width: 80px;
+            height: 80px;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .play-button i {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-left: 5px;
+        }
+
+        .play-button:hover {
+            transform: scale(1.1);
+            background: white;
+        }
+
+        /* 3D Slider Styles */
+        .slider-3d-container {
+            width: 100%;
+            max-width: 900px;
+            height: 500px;
+            margin: 50px auto;
+            position: relative;
+            perspective: 1200px;
+        }
+
+        .slider-3d {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 1s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        .slide-3d {
+            position: absolute;
+            width: 70%;
+            height: 80%;
+            left: 15%;
+            top: 10%;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+            transition: transform 0.8s, opacity 0.8s, z-index 0.8s;
+            background-size: cover;
+            background-position: center;
+            transform-origin: center;
+        }
+
+        .slide-3d-content {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 30px;
+            background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+            color: white;
+            transform: translateY(100%);
+            transition: transform 0.5s ease;
+        }
+
+        .slide-3d.active .slide-3d-content {
+            transform: translateY(0);
+        }
+
+        .slide-3d-title {
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+            color: var(--accent);
+        }
+
+        .slider-3d-nav {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+            gap: 15px;
+        }
+
+        .nav-3d-dot {
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .nav-3d-dot.active {
+            background: var(--primary);
+            transform: scale(1.3);
+        }
+
+        .slider-3d-controls {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+            gap: 20px;
+        }
+
+        .slider-3d-btn {
+            width: 50px;
+            height: 50px;
+            background: var(--primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .slider-3d-btn:hover {
+            transform: scale(1.1);
+            background: var(--secondary);
+        }
+
+        .slider-3d-btn i {
+            font-size: 1.2rem;
+            color: white;
+        }
+
+        .music-player {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            background: var(--primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            z-index: 100;
+            transition: all 0.3s ease;
+        }
+
+        .music-player:hover {
+            transform: scale(1.1);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+        }
+
+        .music-player i {
+            font-size: 1.5rem;
+            color: white;
+        }
+
+        .confetti {
+            position: fixed;
+            width: 15px;
+            height: 15px;
+            background-color: var(--primary);
+            opacity: 0;
+            pointer-events: none;
+            z-index: 1000;
+        }
+
+        .floating-elements {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .floating-element {
+            position: absolute;
+            font-size: 2rem;
+            opacity: 0.1;
+            animation: float 15s infinite linear;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(100vh) rotate(0deg); }
+            100% { transform: translateY(-100px) rotate(360deg); }
+        }
+
+        .message-section {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
+            margin: 50px 0;
+            max-width: 800px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            min-height: 500px;
+            position: relative;
+        }
+
+        .message-section h2 {
+            font-family: 'Dancing Script', cursive;
+            font-size: 3rem;
+            margin-bottom: 20px;
+            color: var(--accent);
+        }
+
+        .message-section p {
+            font-size: 1.2rem;
+            line-height: 1.8;
+            margin-bottom: 20px;
+            min-height: 1.5em; /* Ensure consistent height during typing */
+        }
+
+        .typing-cursor {
+            display: inline-block;
+            width: 3px;
+            height: 1.2em;
+            background-color: var(--accent);
+            margin-left: 2px;
+            animation: blink 1s infinite;
+            vertical-align: middle;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: var(--accent);
+            font-size: 1rem;
+            opacity: 0.7;
+            animation: bounce 2s infinite;
+        }
+
+        .audio-notification {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 50px;
+            z-index: 1001;
+            display: none;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .audio-notification.show {
+            display: flex;
+        }
+
+        .song-info {
+            position: fixed;
+            bottom: 100px;
+            right: 30px;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 10px 15px;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            max-width: 200px;
+            text-align: center;
+            z-index: 99;
+            display: none; /* Hide by default, show when playing */
+        }
+
+        /* Media Queries */
+        @media (max-width: 768px) {
+            h1 { font-size: 3.5rem; }
+            .birthday-name { font-size: 2.8rem; }
+            .gift-card { width: 250px; height: 320px; }
+            .slider-3d-container { height: 400px; }
+            .message-section { padding: 30px 20px; }
+            .countdown-number { font-size: 10rem; }
+            .countdown-message { font-size: 2rem; }
+            .gift-question { font-size: 2.5rem; }
+            .gift-btn { padding: 15px 30px; font-size: 1.5rem; }
+            .permission-title { font-size: 2rem; }
+            .permission-text { font-size: 1rem; }
+        }
+
+        @media (max-width: 480px) {
+            h1 { font-size: 2.8rem; }
+            .birthday-name { font-size: 2.2rem; }
+            .gift-card { width: 220px; height: 300px; }
+            .slider-3d-container { height: 300px; }
+            .card-title { font-size: 1.5rem; }
+            .card-message { font-size: 1rem; }
+            .countdown-number { font-size: 8rem; }
+            .countdown-message { font-size: 1.5rem; }
+            .gift-question { font-size: 2rem; }
+            .gift-buttons { flex-direction: column; gap: 20px; }
+            .gift-btn { padding: 15px 30px; font-size: 1.2rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="audio-permission-overlay" id="audioPermissionOverlay">
+        <div class="permission-icon">
+            <i class="fas fa-music"></i>
+        </div>
+        <h2 class="permission-title">Enable Music for the Full Experience</h2>
+        <p class="permission-text">This birthday surprise includes a special Bollywood song that will make the celebration even more magical. Click the button below to enable audio!</p>
+        <button class="permission-button" id="enableAudioButton">Enable Music</button>
+    </div>
+    
+    <div class="audio-notification" id="audioNotification">
+        <i class="fas fa-volume-up"></i>
+        <span>Music enabled! Enjoy the celebration!</span>
+    </div>
+    
+    <div class="countdown-overlay hidden" id="countdownOverlay">
+        <div class="countdown-number" id="countdownNumber">3</div>
+        <div class="countdown-message" id="countdownMessage">Get ready for your surprise!</div>
+    </div>
+    
+    <div class="gift-acceptance-overlay hidden" id="giftAcceptanceOverlay">
+        <div class="gift-question">Do you want your birthday gift?</div>
+        <div class="gift-buttons">
+            <button class="gift-btn gift-yes" id="giftYes">YES</button>
+            <button class="gift-btn gift-no" id="giftNo">NO</button>
+        </div>
+        <div id="noClickMessage" style="color: white; margin-top: 20px; font-size: 1.2rem; display: none;"></div>
+    </div>
+    
+    <div class="main-content" id="mainContent">
+        <div class="stars" id="stars"></div>
+        
+        <div class="floating-elements" id="floatingElements"></div>
+        
+        <div class="container">
+            <div class="header">
+                <h1>Happy Birthday!</h1>
+                <div class="birthday-date">November 17th</div>
+                <div class="birthday-name">Greeshma</div>
+            </div>
+            
+            <div class="gift-cards-container">
+                <div class="gift-card">
+                    <div class="card-front">
+                        <i class="fas fa-heart card-icon"></i>
+                        <h3 class="card-title">Love & Affection</h3>
+                        <p>Click to reveal your gift</p>
+                    </div>
+                    <div class="card-back">
+                        <h3 class="card-title">My Love for You</h3>
+                        <p class="card-message">You're the most amazing sister anyone could ask for. My love for you is endless and grows stronger every day!</p>
+                        <button class="card-button">Enjoy!</button>
+                    </div>
+                </div>
+                
+                <div class="gift-card">
+                    <div class="card-front">
+                        <i class="fas fa-gift card-icon"></i>
+                        <h3 class="card-title">Special Surprise</h3>
+                        <p>Click to reveal your gift</p>
+                    </div>
+                    <div class="card-back">
+                        <h3 class="card-title">Birthday Surprise!</h3>
+                        <p class="card-message">I've planned something special just for you! Get ready for an unforgettable birthday experience.</p>
+                        <button class="card-button">Reveal</button>
+                    </div>
+                </div>
+                
+                <div class="gift-card">
+                    <div class="card-front">
+                        <i class="fas fa-camera card-icon"></i>
+                        <h3 class="card-title">Memory Lane</h3>
+                        <p>Click to reveal your gift</p>
+                    </div>
+                    <div class="card-back">
+                        <h3 class="card-title">Precious Memories</h3>
+                        <p class="card-message">You're not just my sister, you're my forever friend and the best part of every memory.</p>
+                        <button class="card-button">Remember</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="video-container">
+                <div class="video-overlay">
+                    <div class="play-button">
+                        <i class="fas fa-play"></i>
+                    </div>
+                </div>
+                <video id="birthdayVideo" controls>
+                    <source src="bv.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+            </div>
+            
+            <div class="slider-3d-container">
+                <div class="slider-3d" id="slider3d">
+                    <div class="slide-3d active" style="background-image: url('images/image1.png');">
+                        <div class="slide-3d-content">
+                            <h3 class="slide-3d-title">Celebration Time!</h3>
+                            <p>Let's make this birthday the most memorable one yet!</p>
+                        </div>
+                    </div>
+                    <div class="slide-3d" style="background-image: url('images/ima2.jpeg');">
+                        <div class="slide-3d-content">
+                            <h3 class="slide-3d-title">Sweet Moments</h3>
+                            <p>Every moment with you is sweeter than birthday cake!</p>
+                        </div>
+                    </div>
+                    <div class="slide-3d" style="background-image: url('images/ima3.jpeg');">
+                        <div class="slide-3d-content">
+                            <h3 class="slide-3d-title">Party Time!</h3>
+                            <!-- <p>Get ready to dance the night away on your special day!</p> -->
+                        </div>
+                    </div>
+                    <div class="slide-3d" style="background-image: url('images/ima4.png');">
+                        <div class="slide-3d-content">
+                            <h3 class="slide-3d-title">Birthday Wishes</h3>
+                            <p>May all your birthday wishes come true this year!</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="slider-3d-nav" id="slider3dNav"></div>
+                <div class="slider-3d-controls">
+                    <div class="slider-3d-btn" id="prevBtn">
+                        <i class="fas fa-chevron-left"></i>
+                    </div>
+                    <div class="slider-3d-btn" id="nextBtn">
+                        <i class="fas fa-chevron-right"></i>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="message-section" id="messageSection">
+                <h2>A Special Message for Greeshma</h2>
+                <p id="messageLine1"></p>
+                <p id="messageLine2"></p>
+                <p id="messageLine3"></p>
+                <p id="messageLine4"></p>
+                <p id="messageLine5"></p>
+                <p id="messageLine6"></p>
+                <p id="messageLine7"></p>
+                <div class="scroll-indicator" id="scrollIndicator">
+                    <i class="fas fa-chevron-down"></i> Scroll to read the message
+                </div>
+            </div>
+        </div>
+        
+        <div class="music-player" id="musicPlayer">
+            <i class="fas fa-play"></i>
+        </div>
+        <div class="song-info" id="songInfo">
+            Now playing: <br>Badtameez Dil - Yeh Jawaani Hai Deewani
+        </div>
+    </div>
+
+    <script>
+    // Simple audio handling
+    let audioEnabled = false;
+    let isPlaying = false;
+    let birthdayMusic = null;
+    let typingAnimationStarted = false;
+
+    // DOM elements
+    const audioPermissionOverlay = document.getElementById('audioPermissionOverlay');
+    const enableAudioButton = document.getElementById('enableAudioButton');
+    const audioNotification = document.getElementById('audioNotification');
+    const countdownOverlay = document.getElementById('countdownOverlay');
+    const countdownNumber = document.getElementById('countdownNumber');
+    const countdownMessage = document.getElementById('countdownMessage');
+    const giftAcceptanceOverlay = document.getElementById('giftAcceptanceOverlay');
+    const giftYesBtn = document.getElementById('giftYes');
+    const giftNoBtn = document.getElementById('giftNo');
+    const mainContent = document.getElementById('mainContent');
+    const musicPlayer = document.getElementById('musicPlayer');
+    const songInfo = document.getElementById('songInfo');
+    const noClickMessage = document.getElementById('noClickMessage'); 
+    const messageSection = document.getElementById('messageSection');
+    const scrollIndicator = document.getElementById('scrollIndicator');
+
+    // UPDATED AUDIO CONSTANTS FOR STABILITY
+    const MUSIC_URL = 'https://s0.vgm.io/songs/94/94541/vgm_super_mario_world_athletic.mp3'; // Upbeat, celebratory music
+    const MUSIC_TITLE = 'Badtameez Dil - Yeh Jawaani Hai Deewani'; // Display name
+
+    let countdownValue = 3;
+    let noClickCount = 0;
+
+    // Show audio notification
+    function showAudioNotification(message) {
+        if (message) {
+            audioNotification.querySelector('span').textContent = message;
+        }
+        audioNotification.classList.add('show');
+        setTimeout(() => {
+            audioNotification.classList.remove('show');
+        }, 3000);
+    }
+
+    // Initialize music element
+    function initializeMusic() {
+        if (!birthdayMusic) {
+            birthdayMusic = new Audio(MUSIC_URL);
+            birthdayMusic.loop = true;
+            birthdayMusic.volume = 0.7;
+            birthdayMusic.load();
+            songInfo.innerHTML = `Now playing: <br>${MUSIC_TITLE}`;
+        }
+    }
+
+    // CRITICAL FIX: Audio Unlock Function
+    function unlockAndPauseAudio() {
+        initializeMusic();
+        // We MUST call play() directly after the user interaction
+        const playPromise = birthdayMusic.play();
+        
+        if (playPromise !== undefined) {
+            playPromise.then(() => {
+                // Success: Audio engine is unlocked. Pause immediately so we can start it later.
+                birthdayMusic.pause();
+                birthdayMusic.currentTime = 0; // Reset for a fresh start
+                isPlaying = false; 
+                musicPlayer.innerHTML = '<i class="fas fa-play"></i>';
+            }).catch(error => {
+                console.log("Unlock play blocked:", error);
+                showAudioNotification("Music is unlocked, but press the play button on the bottom right if it doesn't start.");
+            });
+        }
+    }
+
+    // Function to handle audio permission click
+    function enableAudio() {
+        if (!audioEnabled) {
+            audioEnabled = true;
+            unlockAndPauseAudio(); // Unlock audio immediately on user click
+            
+            audioPermissionOverlay.classList.add('hidden'); 
+            
+            countdownOverlay.classList.remove('hidden');
+            
+            startCountdown();
+            
+            showAudioNotification("Music enabled! Ready for the surprise!");
+        }
+    }
+
+    // Enable audio when permission button is clicked
+    enableAudioButton.addEventListener('click', enableAudio);
+
+    // Start countdown
+    function startCountdown() {
+        countdownNumber.textContent = countdownValue;
+        
+        if (countdownValue > 0) {
+            setTimeout(() => {
+                countdownValue--;
+                startCountdown();
+            }, 1000);
+        } else {
+            countdownNumber.textContent = "🎉";
+            countdownMessage.textContent = "Happy Birthday Greeshma!";
+            
+            setTimeout(() => {
+                countdownOverlay.classList.add('hidden');
+                setTimeout(() => {
+                    giftAcceptanceOverlay.classList.remove('hidden');
+                }, 500);
+            }, 2000);
+        }
+    }
+
+    // Function to show main content
+    function showMainContent() {
+        giftAcceptanceOverlay.classList.add('hidden');
+        // Reset the 'NO' button position if it was moved
+        giftNoBtn.style.position = '';
+        giftNoBtn.style.left = '';
+        giftNoBtn.style.top = '';
+        noClickMessage.style.display = 'none';
+
+        setTimeout(() => {
+            mainContent.classList.add('active');
+            createConfetti();
+            playBirthdayMusic(); 
+            setupScrollListener(); // Set up scroll listener for typing animation
+        }, 500);
+    }
+
+    // Gift acceptance functionality
+    giftYesBtn.addEventListener('click', showMainContent);
+
+    giftNoBtn.addEventListener('click', function() {
+        noClickCount++;
+        
+        // Move the NO button randomly
+        const maxX = window.innerWidth - this.offsetWidth - 50;
+        const maxY = window.innerHeight - this.offsetHeight - 50;
+        const randomX = Math.floor(Math.random() * maxX);
+        const randomY = Math.floor(Math.random() * maxY);
+        
+        this.style.position = 'fixed';
+        this.style.left = randomX + 'px';
+        this.style.top = randomY + 'px';
+        
+        // Update message
+        let msg = '';
+        if (noClickCount === 1) {
+            msg = "Come on! You know you want it 😉";
+        } else if (noClickCount === 2) {
+            msg = "Silly! Just say 'YES' to the surprise!";
+        } else {
+            msg = "You can't escape your birthday treat! Prepare for launch...";
+        }
+        noClickMessage.textContent = msg;
+        noClickMessage.style.display = 'block';
+
+        // If clicked multiple times, force YES
+        if (noClickCount >= 3) {
+            setTimeout(showMainContent, 500);
+        }
+    });
+
+    // Create stars background
+    const starsContainer = document.getElementById('stars');
+    for (let i = 0; i < 200; i++) {
+        const star = document.createElement('div');
+        star.className = 'star';
+        star.style.width = Math.random() * 3 + 'px';
+        star.style.height = star.style.width;
+        star.style.left = Math.random() * 100 + 'vw';
+        star.style.top = Math.random() * 100 + 'vh';
+        star.style.animationDelay = Math.random() * 5 + 's';
+        starsContainer.appendChild(star);
+    }
+
+    // Create floating elements
+    const floatingContainer = document.getElementById('floatingElements');
+    const icons = ['fas fa-birthday-cake', 'fas fa-gift', 'fas fa-heart', 'fas fa-star', 'fas fa-music'];
+    for (let i = 0; i < 20; i++) {
+        const element = document.createElement('div');
+        element.className = 'floating-element';
+        element.innerHTML = `<i class="${icons[Math.floor(Math.random() * icons.length)]}"></i>`;
+        element.style.left = Math.random() * 100 + 'vw';
+        element.style.animationDelay = Math.random() * 15 + 's';
+        element.style.color = `hsl(${Math.random() * 360}, 70%, 60%)`;
+        floatingContainer.appendChild(element);
+    }
+
+    // Gift card flip functionality
+    const giftCards = document.querySelectorAll('.gift-card');
+    giftCards.forEach(card => {
+        card.addEventListener('click', function() {
+            this.classList.toggle('flipped');
+            createConfetti();
+            playSound();
+        });
+    });
+
+    // 3D Slider functionality
+    const slider3d = document.getElementById('slider3d');
+    const slides3d = document.querySelectorAll('.slide-3d');
+    const slider3dNav = document.getElementById('slider3dNav');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    let currentSlide3d = 0;
+    const totalSlides3d = slides3d.length;
+
+    // Create navigation dots
+    slides3d.forEach((_, index) => {
+        const dot = document.createElement('div');
+        dot.className = 'nav-3d-dot';
+        if (index === 0) dot.classList.add('active');
+        dot.addEventListener('click', () => goToSlide3d(index));
+        slider3dNav.appendChild(dot);
+    });
+
+    function goToSlide3d(slideIndex) {
+        currentSlide3d = slideIndex;
+        updateSlider3d();
+    }
+
+    function updateSlider3d() {
+        // Update active class on slides
+        slides3d.forEach((slide, index) => {
+            slide.classList.toggle('active', index === currentSlide3d);
+            
+            // Apply 3D transformations for carousel effect
+            const angle = (index - currentSlide3d) * 40; // Angle between slides
+            const zOffset = Math.abs(index - currentSlide3d) * -100; // Z depth
+            const xOffset = Math.sin(angle * Math.PI / 180) * 300; // X position
+            
+            slide.style.transform = `rotateY(${angle}deg) translateZ(${zOffset}px) translateX(${xOffset}px)`;
+            slide.style.opacity = index === currentSlide3d ? '1' : '0.7';
+            slide.style.zIndex = index === currentSlide3d ? '10' : '1';
+        });
+    }
+
+    // Navigation buttons
+    prevBtn.addEventListener('click', function() {
+        currentSlide3d = (currentSlide3d - 1 + totalSlides3d) % totalSlides3d;
+        updateSlider3d();
+    });
+
+    nextBtn.addEventListener('click', function() {
+        currentSlide3d = (currentSlide3d + 1) % totalSlides3d;
+        updateSlider3d();
+    });
+
+    // Auto-advance slides
+    setInterval(() => {
+        currentSlide3d = (currentSlide3d + 1) % totalSlides3d;
+        updateSlider3d();
+    }, 5000);
+
+    // Video play functionality
+    const videoOverlay = document.querySelector('.video-overlay');
+    const playButton = document.querySelector('.play-button');
+    const video = document.getElementById('birthdayVideo');
+
+    video.addEventListener('play', function() {
+        videoOverlay.classList.add('hidden');
+    });
+
+    playButton.addEventListener('click', function() {
+        video.play();
+    });
+
+    // Birthday music functionality (The actual play when content is active)
+    function playBirthdayMusic() {
+        if (audioEnabled) {
+            initializeMusic(); 
+            
+            songInfo.style.display = 'block';
+            
+            // Attempt to play using the unlocked audio element
+            const playPromise = birthdayMusic.play();
+            
+            if (playPromise !== undefined) {
+                playPromise.then(() => {
+                    isPlaying = true;
+                    musicPlayer.innerHTML = '<i class="fas fa-pause"></i>';
+                    showAudioNotification(`Now playing: ${MUSIC_TITLE}`);
+                }).catch(e => {
+                    console.log("Birthday music play error. Fallback needed:", e);
+                    showAudioNotification("Click the music button on the bottom right to start the song.");
+                    musicPlayer.innerHTML = '<i class="fas fa-play"></i>';
+                });
+            }
+        } else {
+            showAudioNotification("Enable audio to hear the song");
+        }
+    }
+
+    // Music player functionality (for manual pause/play)
+    musicPlayer.addEventListener('click', function() {
+        if (!audioEnabled) {
+            enableAudio();
+            return;
+        }
+        
+        initializeMusic(); 
+        
+        if (isPlaying) {
+            birthdayMusic.pause();
+            musicPlayer.innerHTML = '<i class="fas fa-play"></i>';
+            isPlaying = false;
+            songInfo.style.display = 'none';
+        } else {
+            // Manual click, so it's a trusted gesture. This should ALWAYS work.
+            birthdayMusic.play().then(() => {
+                musicPlayer.innerHTML = '<i class="fas fa-pause"></i>';
+                isPlaying = true;
+                songInfo.style.display = 'block';
+                showAudioNotification(`Now playing: ${MUSIC_TITLE}`);
+            }).catch(e => {
+                console.log("Manual play error:", e);
+                showAudioNotification("Cannot play music. Check volume or try refreshing.");
+            });
+        }
+    });
+
+    // Confetti effect
+    function createConfetti() {
+        const colors = ['#ff4d8d', '#9c27b0', '#ffeb3b', '#4caf50', '#2196f3'];
+        
+        for (let i = 0; i < 50; i++) {
+            const confetti = document.createElement('div');
+            confetti.className = 'confetti';
+            confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+            confetti.style.left = Math.random() * 100 + 'vw';
+            confetti.style.top = '-20px';
+            confetti.style.transform = `rotate(${Math.random() * 360}deg)`;
+            document.body.appendChild(confetti);
+            
+            // Animate confetti
+            const animation = confetti.animate([
+                { transform: `translate(0, 0) rotate(0deg)`, opacity: 1 },
+                { transform: `translate(${Math.random() * 200 - 100}px, ${window.innerHeight}px) rotate(${Math.random() * 720}deg)`, opacity: 0 }
+            ], {
+                duration: Math.random() * 3000 + 2000,
+                easing: 'cubic-bezier(0.1, 0.8, 0.2, 1)'
+            });
+            
+            // Remove confetti after animation
+            animation.onfinish = () => {
+                confetti.remove();
+            };
+        }
+    }
+
+    // Sound effects (for card flip)
+    function playSound() {
+        try {
+            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            if (audioContext.state === 'suspended') {
+                audioContext.resume();
+            }
+
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+            
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+            
+            oscillator.type = 'sine';
+            oscillator.frequency.value = 800;
+            gainNode.gain.value = 0.1;
+            
+            oscillator.start();
+            gainNode.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + 0.2);
+            setTimeout(() => {
+                oscillator.stop();
+            }, 200);
+        } catch (e) {
+            console.log("Sound effect error:", e);
+        }
+    }
+
+    // Setup scroll listener for typing animation
+    function setupScrollListener() {
+        window.addEventListener('scroll', function() {
+            if (typingAnimationStarted) return;
+            
+            const messageSectionTop = messageSection.getBoundingClientRect().top;
+            const windowHeight = window.innerHeight;
+            
+            // Start typing animation when message section is in view
+            if (messageSectionTop < windowHeight * 0.8) {
+                startTypingAnimation();
+                typingAnimationStarted = true;
+                scrollIndicator.style.display = 'none'; // Hide scroll indicator
+            }
+        });
+    }
+
+    // Typing animation for the message section
+    function startTypingAnimation() {
+        const messageLines = [
+            "Dear Greeshma,",
+            "On your special day, I want you to know how much you mean to me. You're not just my sister, but also my best friend and confidante. Your laughter brightens my day, and your support means the world to me.",
+            "I hope this birthday brings you endless joy, laughter, and all the happiness you deserve. May this year be filled with amazing adventures, beautiful moments, and dreams come true.",
+            "With all my love,",
+            "Your Sibling"
+        ];
+        
+        const typingSpeed = 30; // milliseconds per character
+        const lineDelay = 1000; // milliseconds between lines
+        
+        // Function to type a single line
+        function typeLine(lineIndex, charIndex = 0) {
+            if (lineIndex >= messageLines.length) return;
+            
+            const lineElement = document.getElementById(`messageLine${lineIndex + 1}`);
+            const lineText = messageLines[lineIndex];
+            
+            if (charIndex < lineText.length) {
+                // Add next character
+                lineElement.textContent = lineText.substring(0, charIndex + 1);
+                
+                // Add blinking cursor
+                const cursor = document.createElement('span');
+                cursor.className = 'typing-cursor';
+                lineElement.appendChild(cursor);
+                
+                // Continue typing after delay
+                setTimeout(() => {
+                    typeLine(lineIndex, charIndex + 1);
+                }, typingSpeed);
+            } else {
+                // Remove cursor when line is complete
+                const cursor = lineElement.querySelector('.typing-cursor');
+                if (cursor) cursor.remove();
+                
+                // Move to next line after delay
+                setTimeout(() => {
+                    typeLine(lineIndex + 1);
+                }, lineDelay);
+            }
+        }
+        
+        // Start typing animation
+        typeLine(0);
+    }
+
+    // Initialize the 3D slider
+    updateSlider3d();
+</script>
+
+</body>
+</html>
