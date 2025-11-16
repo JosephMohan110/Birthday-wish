@@ -783,7 +783,7 @@
             <div class="header">
                 <h1>Happy Birthday!</h1>
                 <div class="birthday-date">November 17th</div>
-                <div class="birthday-name">Greeshma</div>
+                <div class="birthday-name">Greeshma  Chechi</div>
             </div>
             
             <div class="gift-cards-container">
@@ -834,7 +834,7 @@
                     </div>
                 </div>
                 <video id="birthdayVideo" controls>
-                    <source src="bv.mp4" type="video/mp4">
+                    <source src="images/bv.mp4" type="video/mp4">
                     Your browser does not support the video tag.
                 </video>
             </div>
@@ -925,7 +925,7 @@
     const scrollIndicator = document.getElementById('scrollIndicator');
 
     // UPDATED AUDIO CONSTANTS FOR STABILITY
-    const MUSIC_URL = 'https://s0.vgm.io/songs/94/94541/vgm_super_mario_world_athletic.mp3'; // Upbeat, celebratory music
+    const MUSIC_URL = 'audio/song.mpeg'; // Upbeat, celebratory music
     const MUSIC_TITLE = 'Badtameez Dil - Yeh Jawaani Hai Deewani'; // Display name
 
     let countdownValue = 3;
@@ -1003,7 +1003,7 @@
             }, 1000);
         } else {
             countdownNumber.textContent = "🎉";
-            countdownMessage.textContent = "Happy Birthday Greeshma!";
+            countdownMessage.textContent = "Happy Birthday Greeshma chhechi!";
             
             setTimeout(() => {
                 countdownOverlay.classList.add('hidden');
@@ -1046,22 +1046,31 @@
         this.style.position = 'fixed';
         this.style.left = randomX + 'px';
         this.style.top = randomY + 'px';
-        
-        // Update message
+                
+            // Update message
         let msg = '';
         if (noClickCount === 1) {
-            msg = "Come on! You know you want it 😉";
+            msg = "Heyyy! Don’t run away already 😄";
         } else if (noClickCount === 2) {
-            msg = "Silly! Just say 'YES' to the surprise!";
+            msg = "Ayyy, why so shy? Just click YES! 😜";
+        } else if (noClickCount === 3) {
+            msg = "Okay okay… now you're just being dramatic 😂";
+        } else if (noClickCount === 4) {
+            msg = "Escape mode activated huh? 🤣";
+        } else if (noClickCount === 5) {
+            msg = "Stop pressing NO before your finger gets tired 😆";
+        } else if (noClickCount === 6) {
+            msg = "You're really testing my patience… but I like your style 😏";
         } else {
-            msg = "You can't escape your birthday treat! Prepare for launch...";
+            msg = "Enough! You're getting the surprise whether you like it or not! 🚀🎉";
         }
+
         noClickMessage.textContent = msg;
         noClickMessage.style.display = 'block';
 
         // If clicked multiple times, force YES
-        if (noClickCount >= 3) {
-            setTimeout(showMainContent, 500);
+        if (noClickCount >= 6) {
+            setTimeout(showMainContent, 900);
         }
     });
 
